@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+  - lts/*
+install:
+  - npm install # npm ci
+script:
+  - npm run build:h5 # npm run docs:build
+deploy:
+  provider: pages
+  skip_cleanup: true
+  local_dir: dist/build/h5
+  target-branch: gh-pages
+  github_token: $GITHUB_TOKEN # A token generated on GitHub allowing Travis to push code on you repository. Set in the Travis settings page of your repository, as a secure variable
+  keep_history: false
+  on:
+    branch: master
