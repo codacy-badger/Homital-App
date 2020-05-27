@@ -1,32 +1,43 @@
-async function requestAcessToken(refreshToken) {
+async function requestAcessToken(callback) {
     var _str = '';
+    var successful = false;
     await uni.request({
         url: 'http://homital.ml:2333/api/auth/user/token',
-        data() {
-            return {
-                token: refreshToken
-            }
+        data: {
+            token: uni.getStorageSync("refresh_token")
         },
         method : 'POST',
         header: {
             'content-type' : 'application/json'
         },
         success: (res) => {
+            console.log('in rat.succ');
             if (res.data.success) {
+                successful = true;
                 _str = res.data.access_token;
                 getApp().globalData.access_token = _str;
+                callback(true);
+                return;
             } else {
+                console.log("res: ", res.data)
                 _str = res.data.error;
+                callback(false);
+                return;
             }
+        },
+        fail: (res) => {
+            callback(false);
+            return;
         }
     });
-    return _str;
+    return successful;
 }
 
-async function makeAuthenticatedCall(access_token, _url, _body, _method) {
+async function makeAuthenticatedCall(_url, _body, _method) {
     //first check if access_token has expired
     
     //if expired, generate again using -> requestAcessToken(getRefreshToken from local data storage)
+    var access_token = getApp().globalData.access_token;
     await unirequest({
         url : _url,
         data : _body,

@@ -72,6 +72,7 @@
                 var tHIS = this;
                 var password = tHIS.password;
                 var reconfirmPassword = tHIS.reconfirmPassword;
+                var url = getApp().globalData.base_url + '/auth/user/register';
                 if (!password) {
 					tHIS.message = "Password cannot be empty";
 					return false;
@@ -81,7 +82,7 @@
 					return false;
 				}
                 uni.request({
-						url: 'https://2333-dfadba70-0816-4087-9087-9aa793efb90a.ws-us02.gitpod.io/api/auth/user/register',
+						url: url,
 						data: {
                             username: tHIS.username,
 							email: tHIS.emailAddress,
