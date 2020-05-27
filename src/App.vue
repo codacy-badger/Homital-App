@@ -1,17 +1,19 @@
 <script>
 	export default {
 		globalData: {  
+			base_url :'http://homital.ml:2333/api',
             refresh_token: '',
-            access_token: ''
+			access_token: '',
+			userinfo:''
         }, 
 		onLaunch: function() {
-			console.log('App Launch')
+			console.log('App Launch');
 		},
 		onShow: function() {
-			console.log('App Show')
+			console.log('App Show');
 		},
 		onHide: function() {
-			console.log('App Hide')
+			console.log('App Hide');
 		}
 	}
 </script>

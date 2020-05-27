@@ -1,8 +1,8 @@
 {
 	"pages": [{
-		"path": "pages/login/login",
+		"path": "pages/index/index",
 		"style": {
-			"navigationBarTitleText": "Log in to Homital"
+			"navigationBarTitleText": "Homital Lamp"
 		}
 	}, {
 		"path": "pages/login/register",
@@ -15,9 +15,14 @@
 			"navigationBarTitleText": "Homital User Agreement"
 		}
 	}, {
-		"path": "pages/index/index",
+		"path": "pages/login/login",
 		"style": {
-			"navigationBarTitleText": "Homital Lamp"
+			"navigationBarTitleText": "Log in to Homital"
+		}
+	}, {
+		"path": "pages/me/me",
+		"style": {
+			"navigationBarTitleText": "Me"
 		}
 	}],
 	"globalStyle": {
@@ -37,7 +42,7 @@
                 "text" : "Control"
             },
             {
-                "pagePath" : "pages/login/login",
+                "pagePath" : "pages/me/me",
                 "text" : "Me"
             }
         ]
