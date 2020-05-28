@@ -2,7 +2,7 @@ async function requestAcessToken(callback) {
     var _str = '';
     var successful = false;
     await uni.request({
-        url: 'http://homital.ml:2333/api/auth/user/token',
+        url: 'https://homital.ml:2333/api/auth/user/token',
         data: {
             token: uni.getStorageSync("refresh_token")
         },

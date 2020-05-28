@@ -25,7 +25,7 @@
 		onReady: function() {
 			var fff =this;
 			uni.request({
-				url: 'http://homital.ml:2333/api/user/alice/livingroom/lamp',
+				url: 'https://homital.ml:2333/api/user/alice/livingroom/lamp',
 				method: 'GET',
 				success: function(res) {
 					console.log(res.data);
@@ -52,7 +52,7 @@
 			_request() {
 				if (this.status) {
 					uni.request({
-						url: 'http://homital.ml:2333/api/user/alice/livingroom/lamp/poweroff',
+						url: 'https://homital.ml:2333/api/user/alice/livingroom/lamp/poweroff',
 						data: {
 							res: ''
 						},
@@ -67,7 +67,7 @@
 					});
 				} else {
 					uni.request({
-						url: 'http://homital.ml:2333/api/user/alice/livingroom/lamp/poweron',
+						url: 'https://homital.ml:2333/api/user/alice/livingroom/lamp/poweron',
 						data() {
 							return {
 								res: ''

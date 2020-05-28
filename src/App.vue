@@ -1,7 +1,7 @@
 <script>
 	export default {
 		globalData: {  
-			base_url :'http://homital.ml:2333/api',
+			base_url :'https://homital.ml:2333/api',
             refresh_token: '',
 			access_token: '',
 			userinfo:''
