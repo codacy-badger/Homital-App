@@ -6,9 +6,9 @@ async function requestAcessToken(callback) {
         data: {
             token: uni.getStorageSync("refresh_token")
         },
-        method : 'POST',
+        method: 'POST',
         header: {
-            'content-type' : 'application/json'
+            'content-type': 'application/json'
         },
         success: (res) => {
             console.log('in rat.succ');
@@ -33,20 +33,22 @@ async function requestAcessToken(callback) {
     return successful;
 }
 
-async function makeAuthenticatedCall(_url, _body, _method) {
+async function makeAuthenticatedCall(callback, _url, _body, _method, num) {
     //first check if access_token has expired
-    
+
     //if expired, generate again using -> requestAcessToken(getRefreshToken from local data storage)
     var access_token = getApp().globalData.access_token;
-    await unirequest({
-        url : _url,
-        data : _body,
-        method : _method,
-        header : {
-            'Authorisation' : 'Bearer ' + access_token
+
+
+    await uni.request({
+        url: _url,
+        data: _body,
+        method: _method,
+        header: {
+            'Authorisation': 'Bearer ' + access_token
         },
-        success : (res) => {
-            if (res.data.error.equals("token_verification_error")) {
+        success: (res) => {
+            if (res.data.error && res.data.error.equals("token_verification_error")) {
                 var get_refresh = '';
                 uni.getStorage({
                     key: 'refresh_token',
@@ -57,17 +59,27 @@ async function makeAuthenticatedCall(_url, _body, _method) {
                 });
                 var new_access = requestAcessToken(get_refresh);
                 getApp().globalData.access_token = new_access;
-                makeAuthenticatedCall(new_access, _url, _body, _method);
+                if (num >= 0) {
+                    makeAuthenticatedCall(callback, num - 1);
+                } else {
+                    uni.showToast({
+                        icon: 'none',
+                        title: 'Your request cannot be processed',
+                        duration: 2000
+                    });
+                }
+            } else {
+                callback(res.data);
             }
-        } 
-    }); 
+        }
+    });
 
 
 }
 
 module.exports = {
-    functions : {
-        requestAcessToken : requestAcessToken,
-        makeAuthenticatedCall : makeAuthenticatedCall
+    functions: {
+        requestAcessToken: requestAcessToken,
+        makeAuthenticatedCall: makeAuthenticatedCall
     }
 }
