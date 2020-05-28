@@ -103,7 +103,9 @@ export default {
 								url: '../me/me'
 							});
 
-							// uni.navigateBack({});
+                            // uni.navigateBack();
+                            
+
                             // uni.navigateTo({
                             //     url: "../me/me",
                             //     success: res => {console.log('a')},
