@@ -87,23 +87,25 @@ export default {
                     header: {
                         "content-type": "application/json"
                     },
-                    success: res => {
+                    success: async res => {
                         console.log(tHIS.email);
                         if (res.data.success) {
                             tHIS.valid = true;
                             tHIS.refresh_token = res.data.refresh_token;
                             uni.setStorageSync("refresh_token", tHIS.refresh_token);
-							uni.setStorageSync("userinfo", tHIS.username);
+                            uni.setStorageSync("userinfo", tHIS.username);
+                            uni.setStorageSync("notloggedin", false);
+                            console.log("login success set, notloggedin =", uni.getStorageSync('notloggedin'));
 							//console.log("userinfo:", uni.getStorageSync('userinfo'));
-                            uni.showToast({
+                            await uni.showToast({
                                 title: "log in successfully",
                                 duration: 2000
 							});
-							uni.reLaunch({
-								url: '../me/me'
-							});
+							// uni.reLaunch({
+							// 	url: '../me/me'
+							// });
 
-                            // uni.navigateBack();
+                            uni.navigateBack();
                             
 
                             // uni.navigateTo({

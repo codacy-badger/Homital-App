@@ -1,6 +1,6 @@
 <template>
     <view>
-        <view v-if="userinfo">
+        <view v-if="(notloggedin == true || notloggedin == false) && !notloggedin">
             <view class="uni-padding-wrap uni-common-mt">
                 <view class="uni-hello-text" style="margin-bottom: 500rpx">
                     You are logged in as {{userinfo}}
@@ -11,7 +11,7 @@
                 </view>
             </view>
         </view>
-        <view v-if="notloggedin">
+        <view v-if="(notloggedin == true || notloggedin == false) && notloggedin">
             <view class="uni-padding-wrap uni-common-mt">
                 <view
                     class="uni-hello-text"
@@ -33,31 +33,42 @@ export default {
             userinfo: "",
             refresh_token: "",
             error: "",
-            notloggedin: false
+            notloggedin: null
         };
     },
     async onShow() {
         var tHIS = this;
+        tHIS.notloggedin = null;
         //console.log("userinfo: ", uni.getStorageSync("userinfo"));
         console.log("checking account status");
-        await auth.functions.requestAcessToken(success => {
-            console.log("rat: callback, succ=", success);
-            if (!success) {
-                uni.setStorageSync("userinfo", "");
-            }
-            tHIS.userinfo = uni.getStorageSync("userinfo");
-            console.log("userinfo : ", tHIS.userinfo);
-            if (!tHIS.userinfo) {
-                tHIS.notloggedin = true;
-                console.log(tHIS.notloggedin);
-                // uni.navigateTo({
-                //     url: "../login/login",
-                //     success: res => {},
-                //     fail: () => {},
-                //     complete: () => {}
-                // });
-            }
-        });
+        const val = uni.getStorageSync("notloggedin");
+        console.log("print val" + val);
+        console.log("before" + tHIS.notloggedin);
+        tHIS.notloggedin = await uni.getStorageSync("notloggedin");
+        tHIS.userinfo = uni.getStorageSync("userinfo");
+        console.log("after" + tHIS.notloggedin);
+
+
+
+        // await auth.functions.requestAcessToken(success => {
+        //     console.log("rat: callback, succ=", success);
+        //     if (!success) {
+        //         uni.setStorageSync("userinfo", "");
+        //         tHIS.notloggedin = false;
+        //     }
+        //     tHIS.userinfo = uni.getStorageSync("userinfo");
+        //     console.log("userinfo : ", tHIS.userinfo);
+        //     if (!tHIS.userinfo) {
+        //         tHIS.notloggedin = true;
+        //         console.log(tHIS.notloggedin);
+        //         // uni.navigateTo({
+        //         //     url: "../login/login",
+        //         //     success: res => {},
+        //         //     fail: () => {},
+        //         //     complete: () => {}
+        //         // });
+        //     }
+        // });
     },
     methods: {
         _logout() {
@@ -74,15 +85,17 @@ export default {
                 header: {
                     "content-type": "application/json"
                 },
-                success: res => {
+                success: async res => {
                     if (res.data.success) {
+                        console.log("trying to log out...");
                         uni.removeStorageSync("userinfo");
                         uni.removeStorageSync("refresh_token");
+                        uni.setStorageSync("notloggedin", true);
                         uni.showToast({
                             title: "You have successfully logged out.",
                             duration: 2000
                         });
-                        uni.reLaunch({
+                        await uni.reLaunch({
                             url: "../me/me"
                         });
                     } else {
