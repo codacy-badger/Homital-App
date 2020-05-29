@@ -106,14 +106,7 @@ export default {
 							// });
 
                             uni.navigateBack();
-                            
-
-                            // uni.navigateTo({
-                            //     url: "../me/me",
-                            //     success: res => {console.log('a')},
-                            //     fail: () => {console.log('b')},
-                            //     complete: () => {console.log('c')}
-                            // });
+                        
                         } else {
                             tHIS.valid = false;
                             tHIS.error = res.data.error;

@@ -11,18 +11,6 @@
 			</view>
 			</view>
 
-<!-- 
-            <view class="uni-padding-wrap uni-common-mt">
-                <view
-                    class="uni-hello-text"
-                    style="margin-bottom: 500rpx"
-                >Log in to check and control your devices.</view>
-                <view class="uni-btn-v uni-common-mt">
-                    <button type="primary" @tap="_directToLogin">log in</button>
-                </view>
-            </view>
-        </view> -->
-
         <view v-if="(notloggedin == true || notloggedin == false) && !notloggedin">
             <view class="uni-padding-wrap uni-common-mt">
                 <view class="uni-textarea uni-common-mt">
@@ -109,47 +97,6 @@ export default {
                 );
         }
 
-        
-
-
-
-
-        // console.log("checking account status");
-        // await auth.functions.requestAcessToken(success => {
-        //     console.log("rat: callback, succ=", success);
-        //     if (!success) {
-        //         uni.setStorageSync("userinfo", "");
-        //     }
-        //     tHIS.userinfo = uni.getStorageSync("userinfo");
-        //     console.log("userinfo : ", tHIS.userinfo);
-        //     console.log("notloggedin : ", tHIS.notloggedin);
-        //     if (!tHIS.userinfo) {
-        //         tHIS.notloggedin = true;
-        //         console.log(tHIS.notloggedin);
-        //     } else {
-        //         tHIS.notloggedin = false;
-        //         auth.functions.makeAuthenticatedCall(
-        //             resData => {
-        //                 console.log(resData);
-        //                 console.log(resData.success);
-        //                 if (resData.success) {
-        //                     tHIS.status = res.data.status.power;
-        //                     tHIS.haha = tHIS.status ? "primary" : "default";
-        //                 } else {
-        //                     uni.showToast({
-        //                         icon: "none",
-        //                         title: "Cannot lah :<\nplease refresh the page",
-        //                         duration: 2000
-        //                     });
-        //                 }
-        //             },
-        //             getApp().globalData.base_url +
-        //                 "/user/alice/livingroom/lamp",
-        //             {},
-        //             "GET"
-        //         );
-        //     }
-        // });
     },
     methods: {
         _request() {

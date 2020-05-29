@@ -47,28 +47,6 @@ export default {
         tHIS.notloggedin = await uni.getStorageSync("notloggedin");
         tHIS.userinfo = uni.getStorageSync("userinfo");
         console.log("after" + tHIS.notloggedin);
-
-
-
-        // await auth.functions.requestAcessToken(success => {
-        //     console.log("rat: callback, succ=", success);
-        //     if (!success) {
-        //         uni.setStorageSync("userinfo", "");
-        //         tHIS.notloggedin = false;
-        //     }
-        //     tHIS.userinfo = uni.getStorageSync("userinfo");
-        //     console.log("userinfo : ", tHIS.userinfo);
-        //     if (!tHIS.userinfo) {
-        //         tHIS.notloggedin = true;
-        //         console.log(tHIS.notloggedin);
-        //         // uni.navigateTo({
-        //         //     url: "../login/login",
-        //         //     success: res => {},
-        //         //     fail: () => {},
-        //         //     complete: () => {}
-        //         // });
-        //     }
-        // });
     },
     methods: {
         _logout() {
