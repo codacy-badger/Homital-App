@@ -39,14 +39,40 @@ export default {
     async onShow() {
         var tHIS = this;
         tHIS.notloggedin = null;
-        //console.log("userinfo: ", uni.getStorageSync("userinfo"));
+
+        console.log("before userinfo: ", uni.getStorageSync("userinfo"));
+        console.log("before refresh_token: ", uni.getStorageSync("refresh_token"));
         console.log("checking account status");
         const val = uni.getStorageSync("notloggedin");
         console.log("print val" + val);
         console.log("before" + tHIS.notloggedin);
         tHIS.notloggedin = await uni.getStorageSync("notloggedin");
         tHIS.userinfo = uni.getStorageSync("userinfo");
+        console.log("after userinfo: ", uni.getStorageSync("userinfo"));
         console.log("after" + tHIS.notloggedin);
+    },
+    async onPullDownRefresh() {
+        console.log('refresh');
+        //whats the purpose of refreshing (reloading?) again?
+        // this.onShow;
+        var tHIS = this;
+        tHIS.notloggedin = null;
+
+        console.log("before userinfo: ", uni.getStorageSync("userinfo"));
+        console.log("before refresh_token: ", uni.getStorageSync("refresh_token"));
+        console.log("checking account status");
+        const val = uni.getStorageSync("notloggedin");
+        console.log("print val" + val);
+        console.log("before" + tHIS.notloggedin);
+        tHIS.notloggedin = await uni.getStorageSync("notloggedin");
+        tHIS.userinfo = uni.getStorageSync("userinfo");
+        console.log("after userinfo: ", uni.getStorageSync("userinfo"));
+        console.log("after" + tHIS.notloggedin);
+
+
+        setTimeout(function () {
+            uni.stopPullDownRefresh();
+        }, 1000);
     },
     methods: {
         _logout() {
@@ -66,14 +92,14 @@ export default {
                 success: async res => {
                     if (res.data.success) {
                         console.log("trying to log out...");
-                        uni.removeStorageSync("userinfo");
-                        uni.removeStorageSync("refresh_token");
-                        uni.setStorageSync("notloggedin", true);
-                        uni.showToast({
+                        await uni.removeStorageSync("userinfo");
+                        await uni.removeStorageSync("refresh_token");
+                        await uni.setStorageSync("notloggedin", true);
+                        await uni.showToast({
                             title: "You have successfully logged out.",
                             duration: 2000
                         });
-                        await uni.reLaunch({
+                        uni.reLaunch({
                             url: "../me/me"
                         });
                     } else {

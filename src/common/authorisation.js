@@ -1,4 +1,8 @@
-async function requestAcessToken(callback) {
+function requestAcessToken(callback) {
+    requestAcessTokenwrapped(callback, 1);
+}
+
+async function requestAcessTokenwrapped(callback, num) {
     var _str = '';
     var successful = false;
     await uni.request({
@@ -31,7 +35,12 @@ async function requestAcessToken(callback) {
             }
         },
         fail: (res) => {
-            callback(false);
+            console.log("failed to get access token");
+            if (num > 0) {
+                requestAcessTokenwrapped(callback, num - 1);
+            } else {
+                callback(false);
+            }
             return;
         }
     });
@@ -40,12 +49,11 @@ async function requestAcessToken(callback) {
 
 async function makeAuthenticatedCall(callback, _url, _body, _method, num) {
     //first check if access_token has expired
-
     //if expired, generate again using -> requestAcessToken(getRefreshToken from local data storage)
-    var access_token = getApp().globalData.access_token;
+    var access_token = await getApp().globalData.access_token;
     console.log('printing access token before request: ' + access_token);
 
-    await uni.request({
+    uni.request({
         url: _url,
         data: _body,
         method: _method,
@@ -64,34 +72,53 @@ async function makeAuthenticatedCall(callback, _url, _body, _method, num) {
                 var err = res.data.error;
                 console.log("ur error is : " + err);
 
-                // if (!res.data.error || res.data.error.equals("token_verification_error")) {
-                    //ok that means u didn't succeed for the first time
-
-                    if (num >= 0) {
-                        console.log("ok access token was not ok, let's try again");
-                        await requestAcessToken(success => {
-                            if (success) {
-                                console.log("yayy access token gotten");
-                            } else {
-                                console.log("ohno howw")
-                            }
-                        });
-
-                        await makeAuthenticatedCall(callback, _url, _body, _method, num - 1);
-                    } else {
-                        uni.showToast({
-                            icon: 'none',
-                            title: 'Your request cannot be processed',
-                            duration: 2000
-                        });
-                    // }
+                if (num > 0) {
+                    console.log("ok access token was not ok, let's try again");
+                    await requestAcessToken(success => {
+                        if (success) {
+                            console.log("yayy access token gotten");
+                            makeAuthenticatedCall(callback, _url, _body, _method, num - 1);
+                        } else {
+                            console.log("ohno howw")
+                        }
+                    });
+                } else {
+                    uni.showToast({
+                        icon: 'none',
+                        title: 'Your request cannot be processed',
+                        duration: 2000
+                    });
                 }
             }
+        },
+        fail: async (res) => {
+            console.log("failed to get light status");
+            console.log("may have gotten empty response, let's retry");
+            var new_access_token = await getApp().globalData.access_token;
+            await uni.request({
+                url: _url,
+                data: _body,
+                method: _method,
+                header: {
+                    'Authorization': 'Bearer ' + new_access_token
+                },
+                success: async (res) => {
+                    var suc = res.data.success;
+                    console.log("request sent suc : " + suc);
 
+                    if (res.data.success) {
+                        console.log("finally succeeded");
+                        callback(res.data);
+                    } else {
+                        console.log("reached but res.data.success = false :(");
+                    }
+                },
+                fail: (res) => {
+                    console.log("why second time still fail, hopeless alr");
+                }
+            });
         }
     });
-
-
 }
 
 module.exports = {
