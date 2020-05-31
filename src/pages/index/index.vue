@@ -19,9 +19,9 @@
                 <view class="uni-btn-v uni-common-mt">
                     <button
                         @click="_request"
-                        :loading="loading"
+                        v-bind:loading= "status == null ? true : false"
                         v-bind:type="status ? 'primary' : 'default'"
-                    >Switch {{status ? 'Off' : 'On'}}</button>
+                    >{{status == null? 'fetching light status' : status ? 'Switch Off' : 'Switch On'}}</button>
                 </view>
             </view>
         </view>
@@ -38,7 +38,7 @@ export default {
     data() {
         console.log("Evil data() is running");
         return {
-            status: "",
+            status: null,
             res: "",
             loading: false,
             haha: "warn",
@@ -49,31 +49,21 @@ export default {
     async onShow() {
         var tHIS = this;
         tHIS.notloggedin = null;
+        tHIS.status = null;
 
         console.log("checking account status");
         console.log("before" + tHIS.notloggedin);
         tHIS.notloggedin = uni.getStorageSync("notloggedin");
         console.log("after" + tHIS.notloggedin);
 
-        var access = getApp().globalData.access_token;
+        var access = await getApp().globalData.access_token;
     console.log('printing access token just after page: ' + access);
 
         console.log("ok everything begins");
 
-        if(tHIS.notloggedin) {
-            await uni.navigateTo({
-                url: "../login/login",
-                success: res => {
-                    console.log("suc");
-                },
-                fail: () => {
-                    console.log("fal");
-                },
-                complete: () => {}
-            });
-        } else {
+            if(!tHIS.notloggedin) {
             console.log("reached else");
-            await auth.functions.makeAuthenticatedCall(
+            auth.functions.makeAuthenticatedCall(
                     resData => {
                         console.log("reached resData on/off");
                         console.log(resData);
@@ -97,6 +87,52 @@ export default {
                 );
         }
 
+    },
+    async onPullDownRefresh() {
+        console.log('refresh');
+        var tHIS = this;
+        tHIS.notloggedin = null;
+        tHIS.status = null;
+
+        console.log("checking account status");
+        console.log("before" + tHIS.notloggedin);
+        tHIS.notloggedin = uni.getStorageSync("notloggedin");
+        console.log("after" + tHIS.notloggedin);
+
+        var access = await getApp().globalData.access_token;
+    console.log('printing access token just after page: ' + access);
+
+        console.log("ok everything begins");
+
+            if(!tHIS.notloggedin) {
+            console.log("reached else");
+            auth.functions.makeAuthenticatedCall(
+                    resData => {
+                        console.log("reached resData on/off");
+                        console.log(resData);
+                        console.log(resData.success);
+                        if (resData.success) {
+                            tHIS.status = resData.status.power;
+                            tHIS.haha = tHIS.status ? "primary" : "default";
+                        } else {
+                            uni.showToast({
+                                icon: "none",
+                                title: "Cannot lah :<\nplease refresh the page",
+                                duration: 2000
+                            });
+                        }
+                    },
+                    getApp().globalData.base_url +
+                        "/user/alice/livingroom/lamp",
+                    {},
+                    "GET",
+                    1
+                );
+            }
+
+        setTimeout(function () {
+            uni.stopPullDownRefresh();
+        }, 1000);
     },
     methods: {
         _request() {
