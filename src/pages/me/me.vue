@@ -7,7 +7,7 @@
                     <!--textarea :value="userinfo"></textarea-->
                 </view>
                 <view class="uni-btn-v uni-common-mt">
-                    <button type="primary" @tap="_logout">log out</button>
+                    <button type="primary" v-bind:loading ='loggingOutProcessing' @tap="_logout">{{loggingOutProcessing == false? 'log out' :'logging out in progress'}}</button>
                 </view>
             </view>
         </view>
@@ -33,13 +33,13 @@ export default {
             userinfo: "",
             refresh_token: "",
             error: "",
-            notloggedin: null
+            notloggedin: null,
+            loggingOutProcessing : false
         };
     },
     async onShow() {
         var tHIS = this;
         tHIS.notloggedin = null;
-
         console.log("before userinfo: ", uni.getStorageSync("userinfo"));
         console.log("before refresh_token: ", uni.getStorageSync("refresh_token"));
         console.log("checking account status");
@@ -53,8 +53,6 @@ export default {
     },
     async onPullDownRefresh() {
         console.log('refresh');
-        //whats the purpose of refreshing (reloading?) again?
-        // this.onShow;
         var tHIS = this;
         tHIS.notloggedin = null;
 
@@ -77,6 +75,7 @@ export default {
     methods: {
         _logout() {
             var tHIS = this;
+            tHIS.loggingOutProcessing = true;
             this.refresh_token = uni.getStorageSync("refresh_token");
             console.log(this.refresh_token);
             var url = getApp().globalData.base_url + "/auth/user/logout";
@@ -90,11 +89,11 @@ export default {
                     "content-type": "application/json"
                 },
                 success: async res => {
-                    if (res.data.success) {
-                        console.log("trying to log out...");
+                    console.log("trying to log out...");
                         await uni.removeStorageSync("userinfo");
                         await uni.removeStorageSync("refresh_token");
                         await uni.setStorageSync("notloggedin", true);
+                        tHIS.loggingOutProcessing = false;
                         await uni.showToast({
                             title: "You have successfully logged out.",
                             duration: 2000
@@ -102,13 +101,28 @@ export default {
                         uni.reLaunch({
                             url: "../me/me"
                         });
-                    } else {
-                        tHIS.error = res.data.error;
-                        uni.showToast({
-                            title: tHIS.error,
-                            duration: 2000
-                        });
-                    }
+                    // if (res.data.success) {
+                    //     console.log("trying to log out...");
+                    //     await uni.removeStorageSync("userinfo");
+                    //     await uni.removeStorageSync("refresh_token");
+                    //     await uni.setStorageSync("notloggedin", true);
+                    //     await uni.showToast({
+                    //         title: "You have successfully logged out.",
+                    //         duration: 2000
+                    //     });
+                    //     uni.reLaunch({
+                    //         url: "../me/me"
+                    //     });
+                    // } else {
+                    //     await uni.removeStorageSync("userinfo");
+                    //     await uni.removeStorageSync("refresh_token");
+                    //     await uni.setStorageSync("notloggedin", true);
+                    //     tHIS.error = res.data.error;
+                    //     uni.showToast({
+                    //         title: tHIS.error,
+                    //         duration: 2000
+                    //     });
+                    // }
                 }
             });
         },
