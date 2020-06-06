@@ -35,7 +35,7 @@ async function requestAcessTokenwrapped(callback, num) {
             }
         },
         fail: (res) => {
-            console.log("failed to get access token");
+            console.log("failed to get access token in 1 attempt, let's try again");
             if (num > 0) {
                 requestAcessTokenwrapped(callback, num - 1);
             } else {
@@ -48,8 +48,6 @@ async function requestAcessTokenwrapped(callback, num) {
 }
 
 async function makeAuthenticatedCall(callback, _url, _body, _method, num) {
-    //first check if access_token has expired
-    //if expired, generate again using -> requestAcessToken(getRefreshToken from local data storage)
     var access_token = await getApp().globalData.access_token;
     console.log('printing access token before request: ' + access_token);
 
@@ -74,11 +72,20 @@ async function makeAuthenticatedCall(callback, _url, _body, _method, num) {
 
                 if (num > 0) {
                     console.log("ok access token was not ok, let's try again");
-                    await requestAcessToken(success => {
+                    await requestAcessToken(async success => {
                         if (success) {
                             console.log("yayy access token gotten");
                             makeAuthenticatedCall(callback, _url, _body, _method, num - 1);
                         } else {
+                            await uni.showToast({
+                                icon: 'none',
+                                title: 'Your token has already expired. Please log in again.',
+                                duration: 2000
+                            });
+                            uni.setStorageSync("notloggedin", true);
+					        uni.removeStorageSync("refresh_token");
+					        uni.removeStorageSync("userinfo");
+                            callback({success : false, power : undefined});
                             console.log("ohno howw")
                         }
                     });
