@@ -1,5 +1,5 @@
 <template>
-	<view>User Agreement</view>
+  <view>User Agreement</view>
 </template>
 
 <script>
