@@ -1,52 +1,58 @@
 {
-	"pages": [{
-		"path": "pages/index/index",
-		"style": {
-			"navigationBarTitleText": "Homital Lamp",
-			"enablePullDownRefresh": true
-		}
-	}, {
-		"path": "pages/login/register",
-		"style": {
-			"navigationBarTitleText": "Register @ Homital:>"
-		}
-	}, {
-		"path": "pages/login/userAgreement",
-		"style": {
-			"navigationBarTitleText": "Homital User Agreement"
-		}
-	}, {
-		"path": "pages/login/login",
-		"style": {
-			"navigationBarTitleText": "Log in to Homital"
-		}
-	}, {
-		"path": "pages/me/me",
-		"style": {
-			"navigationBarTitleText": "Me",
-			"enablePullDownRefresh": true
-		}
-	}],
-	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
-	},
-	"tabBar" : {
-        "color" : "#7A7E83",
-        "selectedColor" : "#007AFF",
-        "borderStyle" : "black",
-        "backgroundColor" : "#F8F8F8",
-        "list" : [
-            {
-                "pagePath" : "pages/index/index",
-                "text" : "Control"
-            },
-            {
-                "pagePath" : "pages/me/me",
-                "text" : "Me"
-            }
-        ]
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "Homital Lamp",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/login/register",
+      "style": {
+        "navigationBarTitleText": "Register @ Homital:>"
+      }
+    },
+    {
+      "path": "pages/login/userAgreement",
+      "style": {
+        "navigationBarTitleText": "Homital User Agreement"
+      }
+    },
+    {
+      "path": "pages/login/login",
+      "style": {
+        "navigationBarTitleText": "Log in to Homital"
+      }
+    },
+    {
+      "path": "pages/me/me",
+      "style": {
+        "navigationBarTitleText": "Me",
+        "enablePullDownRefresh": true
+      }
     }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#007AFF",
+    "borderStyle": "black",
+    "backgroundColor": "#F8F8F8",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "Control"
+      },
+      {
+        "pagePath": "pages/me/me",
+        "text": "Me"
+      }
+    ]
+  }
 }
