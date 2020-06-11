@@ -1,8 +1,8 @@
 {
-  "name": "",
-  "appid": "",
+  "name": "Homital App",
+  "appid": "__UNI__EAAAB13",
   "description": "",
-  "versionName": "1.0.0",
+  "versionName": "0.0.1",
   "versionCode": "100",
   "transformPx": false,
   "app-plus": {
@@ -41,9 +41,14 @@
           "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
         ]
       },
-      "ios": {}
+      "ios": {},
+      "sdkConfigs": {
+        "ad" : {}
+      }
     },
-    "sdkConfigs": {}
+    "uniStatistics": {
+      "enable": true
+    }
   },
   "quickapp": {},
   "mp-weixin": {
@@ -51,18 +56,41 @@
     "setting": {
       "urlCheck": false
     },
-    "usingComponents": true
+    "usingComponents": true,
+    "uniStatistics": {
+      "enable": true
+    }
   },
   "mp-alipay": {
-    "usingComponents": true
+    "usingComponents": true,
+    "uniStatistics": {
+      "enable": true
+    }
   },
   "mp-baidu": {
-    "usingComponents": true
+    "usingComponents": true,
+    "uniStatistics": {
+      "enable": true
+    }
   },
   "mp-toutiao": {
-    "usingComponents": true
+    "usingComponents": true,
+    "uniStatistics": {
+      "enable": true
+    }
   },
   "mp-qq": {
-    "usingComponents": true
+    "usingComponents": true,
+    "uniStatistics": {
+      "enable": true
+    }
+  },
+  "uniStatistics": {
+    "enable": true
+  },
+  "h5": {
+    "uniStatistics": {
+      "enable": true
+    }
   }
 }
